@@ -419,8 +419,8 @@ module axi_lite_regs_intf #(
   parameter int unsigned                AXI_DATA_WIDTH = 32'd0,
   parameter bit                         PRIV_PROT_ONLY = 1'd0,
   parameter bit                         SECU_PROT_ONLY = 1'd0,
-  parameter logic  [REG_NUM_BYTES-1:0]  AXI_READ_ONLY = {REG_NUM_BYTES{1'b0}},
-  parameter byte_t [REG_NUM_BYTES-1:0]  REG_RST_VAL = {REG_NUM_BYTES{8'h00}}
+  parameter logic  [REG_NUM_BYTES-1:0]  AXI_READ_ONLY = '0,
+  parameter byte_t [REG_NUM_BYTES-1:0]  REG_RST_VAL = '0
 ) (
   input  logic                      clk_i,
   input  logic                      rst_ni,

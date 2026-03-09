@@ -753,9 +753,10 @@ module mem_stream_to_banks_detailed #(
   /// Dependent parameter, do not override! Input response sideband type.
   localparam type inp_ruser_t = logic [NumBanks-1:0][RUserWidth-1:0],
   /// Dependent parameter, do not override! Output data type.
-  localparam type oup_data_t  = logic [DataWidth/NumBanks-1:0],
+  localparam int unsigned OupDataWidth = DataWidth / NumBanks,
+  localparam type oup_data_t  = logic [OupDataWidth-1:0],
   /// Dependent parameter, do not override! Output write strobe type.
-  localparam type oup_strb_t  = logic [DataWidth/NumBanks/8-1:0],
+  localparam type oup_strb_t  = logic [OupDataWidth/8-1:0],
   /// Dependent parameter, do not override! Output response sideband type.
   localparam type oup_ruser_t = logic [RUserWidth-1:0]
 ) (

@@ -65,7 +65,7 @@ module axi_mux #(
   input  mst_resp_t                  mst_resp_i
 );
 
-  localparam int unsigned MstIdxBits    = $clog2(NoSlvPorts);
+  localparam int unsigned MstIdxBits    = (NoSlvPorts > 32'd1) ? $clog2(NoSlvPorts) : 32'd1;
   localparam int unsigned MstAxiIDWidth = SlvAxiIDWidth + MstIdxBits;
 
   // pass through if only one slave port
@@ -384,7 +384,9 @@ module axi_mux #(
     // B Channel
     //--------------------------------------
     // replicate B channels
-    assign slv_b_chans  = {NoSlvPorts{mst_b_chan}};
+    for (genvar i = 0; unsigned'(i) < NoSlvPorts; i++) begin : gen_b_repl
+      assign slv_b_chans[i] = mst_b_chan;
+    end
     // control B channel handshake
     assign switch_b_id  = mst_b_chan.id[SlvAxiIDWidth+:MstIdxBits];
     assign slv_b_valids = (mst_b_valid) ? (1 << switch_b_id) : '0;
@@ -443,7 +445,9 @@ module axi_mux #(
     // R Channel
     //--------------------------------------
     // replicate R channels
-    assign slv_r_chans  = {NoSlvPorts{mst_r_chan}};
+    for (genvar i = 0; unsigned'(i) < NoSlvPorts; i++) begin : gen_r_repl
+      assign slv_r_chans[i] = mst_r_chan;
+    end
     // R channel handshake control
     assign switch_r_id  = mst_r_chan.id[SlvAxiIDWidth+:MstIdxBits];
     assign slv_r_valids = (mst_r_valid) ? (1 << switch_r_id) : '0;
